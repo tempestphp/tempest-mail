@@ -489,13 +489,13 @@ final class MailTester
             if (is_a($exception, Throwable::class, allow_string: true)) {
                 Assert::assertInstanceOf(
                     expected: $exception,
-                    actual: $failed->exception,
+                    actual: $failed?->exception,
                     message: sprintf('Email `%s` failed but did not throw `%s`.', $email, $exception),
                 );
             } else {
                 Assert::assertSame(
                     expected: $exception,
-                    actual: $failed->exception->getMessage(),
+                    actual: $failed?->exception->getMessage(),
                     message: sprintf('Email `%s` failed but threw `%s`.', $email, $failed->exception->getMessage()),
                 );
             }
@@ -503,7 +503,7 @@ final class MailTester
 
         if ($callback instanceof Closure) {
             try {
-                if ($callback($failed->email, $failed->exception) === false) {
+                if ($callback($failed?->email, $failed?->exception) === false) {
                     throw new ExpectationFailedException(message: 'The assertion callback returned `false`.');
                 }
             } catch (ExpectationFailedException $previous) {
